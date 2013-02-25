@@ -13,15 +13,17 @@ client localhost {
 
 # This is NOT secure!
 # Use IPTABLES/Firewall to restrict remote access!
-<% if node['freeradius']['enable_remote_clients'] %>
-client remote {
+<% if @enable_remote_clients
+	@clients.each do |client| -%>
+client <%= client %> {
 	ipaddr = 0.0.0.0
 	netmask = 0
 	secret = <%= node['freeradius']['remote_secret'] %>
 	require_message_authenticator = no
 	nastype     = other
 }
-<% end %>
+<% end 
+end %>
 
 
 
